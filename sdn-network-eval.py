@@ -6,13 +6,21 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 class city:
+    '''
+    Set the column headers for the ping and iPerf data,
+    the date and time for the start and end of the evaluation,
+    and working directory that will be used throughout the class.
+    '''
     pcol = ['Date', 'Epoch', 'Dst IP', 'RTT']
     icol = ['Date', 'Src IP', 'Src Port', 'Dst IP', 'Dst Port', 'Int', 'Bytes', 'Bits/s']
-    ds = datetime.datetime.strptime("2020-12-07 00:00:00", "%Y-%m-%d %H:%M:%S")
-    de = datetime.datetime.strptime("2020-12-14 00:00:00", "%Y-%m-%d %H:%M:%S")
+    ds = datetime.datetime.strptime('2020-12-07 00:00:00', '%Y-%m-%d %H:%M:%S')
+    de = datetime.datetime.strptime('2020-12-14 00:00:00', '%Y-%m-%d %H:%M:%S')
     path = sys.path[0] + '/'
 
     def __init__(self, p_wg, p_zl, p_hk, i_wg, i_hk):
+        '''
+        Read the ping and iPerf data givem their filenames
+        '''
         self.p_wg = pd.read_csv(self.path + p_wg + '.csv',
                                 names=self.pcol, header=None, index_col=0,
                                 parse_dates=True, squeeze=False)
@@ -30,30 +38,38 @@ class city:
                                 parse_dates=True, squeeze=False)
 
     def __crunch(self, d, d_int, n):
+        '''
+        Compute and return the mean, median, standard deviation,
+        min and max values given the duration and the data type.
+        '''
         c = []
         i = 0
         b = 1000000
         while i < n:
             if d_int > 0 and d_int < 8 :
+                # Hourly
                 ts = (self.ds + datetime.timedelta(hours = i,
-                        days = d_int - 1)).strftime("%Y-%m-%d %H:%M:%S")
+                        days = d_int - 1)).strftime('%Y-%m-%d %H:%M:%S')
                 te = (self.ds + datetime.timedelta(hours = i + 1,
-                        days = d_int - 1)).strftime("%Y-%m-%d %H:%M:%S")
+                        days = d_int - 1)).strftime('%Y-%m-%d %H:%M:%S')
                 pktb = 36000
             elif d_int == 0:
+                # Daily
                 ts = (self.ds + datetime.timedelta(
-                        days = i)).strftime("%Y-%m-%d %H:%M:%S")
+                        days = i)).strftime('%Y-%m-%d %H:%M:%S')
                 te = (self.ds + datetime.timedelta(
-                        days = i + 1)).strftime("%Y-%m-%d %H:%M:%S")
+                        days = i + 1)).strftime('%Y-%m-%d %H:%M:%S')
                 pktb = 864000
             elif d_int == 8:
-                ts = self.ds.strftime("%Y-%m-%d %H:%M:%S")
-                te = self.de.strftime("%Y-%m-%d %H:%M:%S")
+                # Weekly
+                ts = self.ds.strftime('%Y-%m-%d %H:%M:%S')
+                te = self.de.strftime('%Y-%m-%d %H:%M:%S')
                 pktb = 6048000
             else:
                 sys.exit('The date integer provided is out of scope')
 
             if 'RTT' in d.columns:
+                # Ping data
                 c.append(
                     {
                         'Date': ts,
@@ -62,10 +78,11 @@ class city:
                         'RTT Std Dev': d.loc[ts : te, 'RTT'].std(),
                         'RTT Min': d.loc[ts : te, 'RTT'].min(),
                         'RTT Max': d.loc[ts : te, 'RTT'].max(),
-                        'Pkt Received': d.loc[ts : te, "RTT"].count()/pktb
+                        'Pkt Received': d.loc[ts : te, 'RTT'].count()/pktb
                     }
                 )
             elif 'Bits/s' in d.columns:
+                # iPerf data
                 c.append(
                     {
                         'Date': ts,
@@ -84,9 +101,15 @@ class city:
         return c
 
     def daily(self, d):
+        '''
+        Return the daily RTT and throughput
+        '''
         return self.__crunch(d, 0, 6)
 
     def hourly(self, d):
+        '''
+        Return the hourly RTT and throughput
+        '''
         h = pd.DataFrame([])
         p = 1
         q = 7
@@ -96,15 +119,25 @@ class city:
         return h
 
     def weekly(self, d):
+        '''
+        Return the weekly RTT and throughput
+        '''
         return self.__crunch(d, 8, 1)
 
     def hourlyd(self, d, d_int):
+        '''
+        Return the hourly RTT and throughput of a given date
+        '''
         if d_int > 0:
             return self.__crunch(d, d_int, 24)
         else:
             sys.exit('The date integer provided is out of scope')
 
     def ex(self, p1, p2, p3, i1, i2, tl, l1, l2, l3, y1, y2, y3, x3, plot):
+        '''
+        Export the given RTT and throughput results and
+        chart them in four subplots:
+        '''
         p1.to_csv(self.path + tl + ' - ' + y1 + ' - ' + l1 + '.csv',
                     index=False, float_format='%.4f')
         p2.to_csv(self.path + tl + ' - ' + y1 + ' - ' + l2 + '.csv',
@@ -117,10 +150,13 @@ class city:
         i2.to_csv(self.path + tl + ' - ' + y3.replace('/', ' per second')
                     + ' - ' + l2 + '.csv',
                     index=False, float_format='%.4f')
+
         if plot == True:
             fig, (mean, zmean, pkt, ipf) = plt.subplots(4, 1,
                                             sharex=True,
                                             figsize=(10, 10))
+
+            # Subplot #1: series #1
             mean.plot(p1.index, p1.loc[:, 'RTT Mean'],
             marker='.', alpha=0.5, linewidth=0.5, label=l1)
             mean.fill_between(p1.index,
@@ -128,10 +164,13 @@ class city:
             p1.loc[:, 'RTT Min']], axis=1).max(axis=1),
             pd.concat([p1.loc[:, 'RTT Mean'] + p1.loc[:, 'RTT Std Dev'],
             p1.loc[:, 'RTT Max']], axis=1).min(axis=1), alpha=0.1)
+            # Subplot #2: series #1
             zmean.plot(p3.index, p3.loc[:, 'RTT Mean'], color='green',
             marker='.', alpha=0.5, linewidth=0.5, label=l3)
+            # Subplot #3
             pkt.plot(p1.index, p1.loc[:, 'Pkt Received'],
             marker='.', alpha=0.5, linewidth=0.5, label=l1)
+            # Subplot #4: series #1
             ipf.plot(i1.index, i1.loc[:, 'Bits/s Mean'],
             marker='.', alpha=0.5, linewidth=0.5, label=l1)
             ipf.fill_between(i1.index,
@@ -139,6 +178,8 @@ class city:
             i1.loc[:, 'Bits/s Min']], axis=1).max(axis=1),
             pd.concat([i1.loc[:, 'Bits/s Mean'] + i1.loc[:, 'Bits/s Std Dev'],
             i1.loc[:, 'Bits/s Max']], axis=1).min(axis=1), alpha=0.1)
+
+            # Subplot #1: series #2
             mean.plot(p2.index, p2.loc[:, 'RTT Mean'],
             marker='.', alpha=0.5, linewidth=0.5, label=l2)
             mean.fill_between(p2.index,
@@ -146,8 +187,10 @@ class city:
             p2.loc[:, 'RTT Min']], axis=1).max(axis=1),
             pd.concat([p2.loc[:, 'RTT Mean'] + p2.loc[:, 'RTT Std Dev'],
             p2.loc[:, 'RTT Max']], axis=1).min(axis=1), alpha=0.1)
+            # Subplot #3: series #2
             pkt.plot(p2.index, p2.loc[:, 'Pkt Received'],
             marker='.', alpha=0.5, linewidth=0.5, label=l2)
+            # Subplot #4: series #2
             ipf.plot(i2.index, i2.loc[:, 'Bits/s Mean'],
             marker='.', alpha=0.5, linewidth=0.5, label=l2)
             ipf.fill_between(i2.index,
@@ -156,6 +199,7 @@ class city:
             pd.concat([i2.loc[:, 'Bits/s Mean'] + i2.loc[:, 'Bits/s Std Dev'],
             i2.loc[:, 'Bits/s Max']], axis=1).min(axis=1), alpha=0.1)
 
+            # Chart options
             fig.suptitle(tl)
             mean.legend()
             mean.set_ylabel(y1)
@@ -175,7 +219,12 @@ class city:
             plt.savefig(tl + '.png')
             #plt.show()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
+    '''
+    Create the city objects given their respective ping and iPerf
+    data, compute and export the hourly and weekly RTT and throughput,
+    and chart the hourly RTT and throughput.
+    '''
     mb = city('ping-mb-10.1.1.1',
                 'ping-mb-45.43.45.141',
                 'ping-mb-18.163.161.217',
@@ -193,7 +242,11 @@ if __name__ == "__main__":
                 'ping-hc-18.163.161.217',
                 'iperf-hc-10.1.1.1',
                 'iperf-hc-18.163.161.217')
-    hc.ds = datetime.datetime.strptime("2020-12-10 00:00:00", "%Y-%m-%d %H:%M:%S")
+    '''
+    Adjust the date and time for the start and end of
+    the evaluation for Ho Chi Minh City
+    '''
+    hc.ds = datetime.datetime.strptime('2020-12-10 00:00:00', '%Y-%m-%d %H:%M:%S')
 
     mb.ex(mb.hourly(mb.p_wg),
             mb.hourly(mb.p_hk),
