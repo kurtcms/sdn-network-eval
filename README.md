@@ -17,9 +17,13 @@ A detailed walk-though is available [here](https://kurtcms.org/networking-techni
 ## Table of Content
 
 - [Getting Started](#getting-started)
-- [Dependencies](#dependencies)
-- [Run](#run)
+  - [Git Clone](#git-clone)
+  - [Dependencies](#dependencies)
+  - [Run](#run)
 - [Performance Comparison](#performance-comparison)
+  - [Ho Chi Minh City](#ho-chi-minh-city)
+  - [Mumbai](#mumbai)
+  - [Singapore](#singapore)
 
 ## Getting Started
 
@@ -29,14 +33,14 @@ Get started in three simple steps:
 2. Install the [dependencies](#dependencies); and
 3. [Run](#run) the script manually.
 
-## Git Clone
+### Git Clone
 
 Download a copy of the script with `git clone`
 ```shell
 $ git clone https://github.com/kurtcms/sdn-network-eval /opt/
 ```
 
-## Dependencies
+### Dependencies
 
 This script requires the following libraries:
 
@@ -50,7 +54,7 @@ Install them with [`pip3`](https://github.com/pypa/pip):
 $ pip3 install numpy pandas matplotlib
 ```
 
-## Run
+### Run
 
 Run the script with [`Python 3`](https://github.com/python/cpython)
 
