@@ -9,7 +9,7 @@ class city:
     '''
     Set the column headers for the ping and iPerf data,
     the date and time for the start and end of the evaluation,
-    and working directory that will be used throughout the class.
+    and a working directory that will be used throughout the class.
     '''
     pcol = ['Date', 'Epoch', 'Dst IP', 'RTT']
     icol = ['Date', 'Src IP', 'Src Port', 'Dst IP', 'Dst Port', 'Int', 'Bytes', 'Bits/s']
@@ -19,7 +19,7 @@ class city:
 
     def __init__(self, p_wg, p_zl, p_hk, i_wg, i_hk):
         '''
-        Read the ping and iPerf data givem their filenames
+        Read the ping and iPerf data given their filenames
         '''
         self.p_wg = pd.read_csv(self.path + p_wg + '.csv',
                                 names=self.pcol, header=None, index_col=0,
