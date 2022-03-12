@@ -12,7 +12,7 @@ This Python script reads [ping output in Comma Separated Values (CSV) format](ht
 
 Below are the results and charts from an evaluation, comparing the performance between direct internet and an extended network, from December 7th to 14th for Mumbai and Singapore and from December 10th to 17th for Ho Chi Minh City.
 
-A detailed walk-though is available [here](https://kurtcms.org/networking-technical-and-commercial-evaluation-of-a-software-defined-network-sdn-for-a-managed-sd-wan-service/).
+A detailed walk-through is available [here](https://kurtcms.org/networking-technical-and-commercial-evaluation-of-a-software-defined-network-sdn-for-a-managed-sd-wan-service/).
 
 ## Table of Content
 
