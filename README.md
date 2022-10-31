@@ -68,16 +68,16 @@ $ python3 /opt/sdn-network-eval/sdn-network-eval.py
 
 With the extended network, jitter from Ho Chi Minh City to Hong Kong dropped by as much as 69% from 5.01ms to 1.66ms while latency increased by 22% from 26.30ms to 32.10ms over direct internet with packet loss holding steady at 0.79%.
 
-![alt text](https://kurtcms.org/git/sdn-network-eval/managed-sd-wan-service-ho-chi-minh-city-hourly-from-2020-12-10-to-2020-12-17.png)
+![alt text](https://github.com/kurtcms/sdn-network-eval/blob/master/managed-sd-wan-service-ho-chi-minh-city-hourly-from-2020-12-10-to-2020-12-17.png)
 
 ### Mumbai
 
 With the extended network, jitter from Mumbai to Hong Kong dropped by as much as 76% from 5.87ms to 1.42ms while latency increased by 14% from 82.97ms to 94.58ms over direct internet with packet loss holding steady at 0.5%.
 
-![alt text](https://kurtcms.org/git/sdn-network-eval/managed-sd-wan-service-mumbai-hourly-from-2020-12-07-to-2020-12-14.png)
+![alt text](https://github.com/kurtcms/sdn-network-eval/blob/master/managed-sd-wan-service-mumbai-hourly-from-2020-12-07-to-2020-12-14.png)
 
 ### Singapore
 
 With the extended network, jitter from Singapore to Hong Kong dropped by as much as 53% from 2.53ms to 1.19ms compared to with direct internet while latency and packet loss were holding steady at 35ms and 0.5-0.7% respectively.
 
-![alt text](https://kurtcms.org/git/sdn-network-eval/managed-sd-wan-service-singapore-hourly-from-2020-12-07-to-2020-12-14.png)
+![alt text](https://github.com/kurtcms/sdn-network-eval/blob/master/managed-sd-wan-service-singapore-hourly-from-2020-12-07-to-2020-12-14.png)
