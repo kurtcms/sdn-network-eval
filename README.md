@@ -35,7 +35,7 @@ Get started in three simple steps:
 
 ### Git Clone
 
-Download a copy of the script with `git clone`
+Download a copy of the script with `git clone`.
 ```shell
 $ git clone https://github.com/kurtcms/sdn-network-eval /app/sdn-network-eval/
 ```
