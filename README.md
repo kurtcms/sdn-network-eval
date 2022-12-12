@@ -59,7 +59,7 @@ $ pip3 install numpy pandas matplotlib
 Run the script with [`python3`](https://github.com/python/cpython)
 
 ```shell
-$ python3 /opt/sdn-network-eval/sdn-network-eval.py
+$ python3 /app/sdn-network-eval/sdn-network-eval.py
 ```
 
 ## Performance Comparison
