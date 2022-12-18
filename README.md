@@ -36,6 +36,7 @@ Get started in three simple steps:
 ### Git Clone
 
 Download a copy of the script with `git clone`.
+
 ```shell
 $ git clone https://github.com/kurtcms/sdn-network-eval /app/sdn-network-eval/
 ```
@@ -56,7 +57,7 @@ $ pip3 install numpy pandas matplotlib
 
 ### Run
 
-Run the script with [`python3`](https://github.com/python/cpython)
+Run the script with [`python3`](https://github.com/python/cpython).
 
 ```shell
 $ python3 /app/sdn-network-eval/sdn-network-eval.py
